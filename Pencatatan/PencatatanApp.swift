@@ -10,7 +10,6 @@ import SwiftUI
 @main
 struct PencatatanApp: App {
     let persistenceController = PersistenceController.shared
-
     var body: some Scene {
         WindowGroup {
             ContentView()

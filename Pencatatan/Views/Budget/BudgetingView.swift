@@ -73,30 +73,32 @@ struct BudgetingView: View {
     }
     
     var body: some View {
-        VStack {
-            if budgets.isEmpty {
-                emptyStateView
-            } else {
-                budgetListView
-            }
-        }
-        .navigationTitle("Budgeting")
-        .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Button(action: {
-                    selectedBudget = nil
-                    selectedCategory = nil
-                    showingAddBudgetSheet = true
-                }) {
-                    Image(systemName: "plus")
+        NavigationView {
+            VStack {
+                if budgets.isEmpty {
+                    emptyStateView
+                } else {
+                    budgetListView
                 }
             }
-        }
-        .sheet(isPresented: $showingAddBudgetSheet) {
-            if let budget = selectedBudget {
-                EditBudgetView(budget: budget, context: context)
-            } else {
-                AddBudgetView(context: context, categories: Array(categories))
+            .navigationTitle("Budgeting")
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: {
+                        selectedBudget = nil
+                        selectedCategory = nil
+                        showingAddBudgetSheet = true
+                    }) {
+                        Image(systemName: "plus")
+                    }
+                }
+            }
+            .sheet(isPresented: $showingAddBudgetSheet) {
+                if let budget = selectedBudget {
+                    EditBudgetView(budget: budget, context: context)
+                } else {
+                    AddBudgetView(context: context, categories: Array(categories))
+                }
             }
         }
     }

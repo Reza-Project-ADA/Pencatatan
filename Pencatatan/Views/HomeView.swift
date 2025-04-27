@@ -142,6 +142,7 @@ struct HomeView: View {
             }
             .listStyle(PlainListStyle())
         }
+        .padding(.vertical)
         .navigationTitle("Transactions")
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
