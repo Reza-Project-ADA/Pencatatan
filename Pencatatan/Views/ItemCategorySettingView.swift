@@ -9,6 +9,7 @@ import SwiftUI
 import CoreData
 
 struct ItemCategorySettingView: View {
+    @Binding var path: [Screen]
     var body: some View {
         GenericSettingsView<ItemModelCategory>(
             entityName: "ItemModelCategory",

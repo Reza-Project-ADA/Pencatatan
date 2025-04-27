@@ -9,6 +9,7 @@ import SwiftUI
 import CoreData
 
 struct ExpenseView: View {
+    @Binding var path: [Screen]
     @Environment(\.managedObjectContext) private var context
     @Environment(\.presentationMode) private var presentationMode
     
@@ -148,6 +149,6 @@ struct ExpenseView: View {
 }
 
 #Preview {
-    ExpenseView()
+    ExpenseView(path: .constant([]))
         .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
 }

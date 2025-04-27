@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct HomeView: View {
+    @Binding var path: [Screen]
     @Environment(\.managedObjectContext) var context
     
     // Fetch transactions
@@ -64,93 +65,94 @@ struct HomeView: View {
     }
     
     var body: some View {
-        NavigationView {
-            VStack {
-                // Totals Section
-                VStack(alignment: .leading, spacing: 4) {
-                    Text("Totals")
-                        .font(.subheadline)
-                        .foregroundColor(.secondary)
-                        .padding(.horizontal)
-                    
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        HStack(spacing: 12) {
-                            ForEach(total, id: \.key) { key, amountDict in
-                                VStack(alignment: .leading, spacing: 4) {
-                                    Text(key.capitalized)
-                                        .font(.subheadline)
-                                        .foregroundColor(.secondary)
-                                    
-                                    if let amount = amountDict["amount"] as? Decimal,
-                                       let color = amountDict["color"] as? Color {
-                                        Text(currencyFormatter.string(from: NSDecimalNumber(decimal: amount)) ?? "Rp. 0")
-                                            .font(.title3)
-                                            .fontWeight(.semibold)
-                                            .foregroundColor(color)
-                                            .lineLimit(1)
-                                            .minimumScaleFactor(0.7)
-                                    }
-                                }
-                                .padding(12)
-                                .frame(width: 160, height: 80)
-                                .background(Color(UIColor.systemGray6))
-                                .cornerRadius(10)
-                            }
-                        }
-                        .padding(.horizontal)
-                    }
-                }
-
-                // Payment Method Balances Section
-                VStack(alignment: .leading, spacing: 4) {
-                    Text("Payment Methods")
-                        .font(.subheadline)
-                        .foregroundColor(.secondary)
-                        .padding(.horizontal)
-                    
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        HStack(spacing: 12) {
-                            ForEach(balances, id: \.id) { balance in
-                                VStack(alignment: .leading, spacing: 4) {
-                                    Text(balance.paymentType.name)
-                                        .font(.subheadline)
-                                        .foregroundColor(.secondary)
-                                    
-                                    Text(currencyFormatter.string(from: balance.balance) ?? "Rp 0")
+        VStack {
+            // Totals Section
+            VStack(alignment: .leading, spacing: 4) {
+                Text("Totals")
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+                    .padding(.horizontal)
+                
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 12) {
+                        ForEach(total, id: \.key) { key, amountDict in
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text(key.capitalized)
+                                    .font(.subheadline)
+                                    .foregroundColor(.secondary)
+                                
+                                if let amount = amountDict["amount"] as? Decimal,
+                                   let color = amountDict["color"] as? Color {
+                                    Text(currencyFormatter.string(from: NSDecimalNumber(decimal: amount)) ?? "Rp. 0")
                                         .font(.title3)
                                         .fontWeight(.semibold)
-                                        .foregroundColor(balance.balance.decimalValue >= 0 ? .green : .red)
+                                        .foregroundColor(color)
                                         .lineLimit(1)
                                         .minimumScaleFactor(0.7)
                                 }
-                                .padding(12)
-                                .frame(width: 160, height: 80)
-                                .background(Color(UIColor.systemGray6))
-                                .cornerRadius(10)
                             }
+                            .padding(12)
+                            .frame(width: 160, height: 80)
+                            .background(Color(UIColor.systemGray6))
+                            .cornerRadius(10)
                         }
-                        .padding(.horizontal)
                     }
+                    .padding(.horizontal)
                 }
-                
-                // Transaction List
-                List {
-                    ForEach(transactions, id: \.id) { transaction in
-                        TransactionRow(transaction: transaction, formatter: currencyFormatter)
-                    }
-                    .onDelete(perform: deleteTransaction) // Add this line
-                }
-                .listStyle(PlainListStyle())
             }
-            .navigationTitle("Transactions")
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    NavigationLink(destination: AddTransactionView()) {
-                        Image(systemName: "plus")
+            
+            // Payment Method Balances Section
+            VStack(alignment: .leading, spacing: 4) {
+                Text("Payment Methods")
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+                    .padding(.horizontal)
+                
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 12) {
+                        ForEach(balances, id: \.id) { balance in
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text(balance.paymentType.name)
+                                    .font(.subheadline)
+                                    .foregroundColor(.secondary)
+                                
+                                Text(currencyFormatter.string(from: balance.balance) ?? "Rp 0")
+                                    .font(.title3)
+                                    .fontWeight(.semibold)
+                                    .foregroundColor(balance.balance.decimalValue >= 0 ? .green : .red)
+                                    .lineLimit(1)
+                                    .minimumScaleFactor(0.7)
+                            }
+                            .padding(12)
+                            .frame(width: 160, height: 80)
+                            .background(Color(UIColor.systemGray6))
+                            .cornerRadius(10)
+                        }
                     }
+                    .padding(.horizontal)
+                }
+            }
+            
+            // Transaction List
+            List {
+                ForEach(transactions, id: \.id) { transaction in
+                    TransactionRow(transaction: transaction, formatter: currencyFormatter)
+                }
+                .onDelete(perform: deleteTransaction) // Add this line
+            }
+            .listStyle(PlainListStyle())
+        }
+        .navigationTitle("Transactions")
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button {
+                    path.append(.addTransaction)
+                } label: {
+                    Image(systemName: "plus")
                 }
             }
         }
+        
     }
     private func deleteTransaction(at offsets: IndexSet) {
         for index in offsets {
@@ -255,6 +257,6 @@ struct TransactionRow: View {
 }
 
 #Preview {
-    HomeView()
+    HomeView(path: .constant([]))
         .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
 }

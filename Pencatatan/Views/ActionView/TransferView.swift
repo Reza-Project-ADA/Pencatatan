@@ -9,6 +9,7 @@ import SwiftUI
 import CoreData
 
 struct TransferView: View {
+    @Binding var path: [Screen]
     @Environment(\.managedObjectContext) private var context
     @Environment(\.presentationMode) private var presentationMode
     
@@ -178,6 +179,6 @@ struct TransferView: View {
 }
 
 #Preview {
-    TransferView()
+    TransferView(path: .constant([]))
         .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
 }

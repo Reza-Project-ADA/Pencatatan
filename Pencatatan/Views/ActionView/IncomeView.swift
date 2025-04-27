@@ -9,6 +9,7 @@ import SwiftUI
 import CoreData
 
 struct IncomeView: View {
+    @Binding var path: [Screen]
     @Environment(\.managedObjectContext) private var context
     @Environment(\.presentationMode) private var presentationMode
     
@@ -141,6 +142,6 @@ struct IncomeView: View {
 }
 
 #Preview {
-    IncomeView()
+    IncomeView(path: .constant([]))
         .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
 }

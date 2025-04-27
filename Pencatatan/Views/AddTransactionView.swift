@@ -8,22 +8,23 @@
 import SwiftUI
 
 struct AddTransactionView: View {
+    @Binding var path: [Screen]
     var body: some View {
         VStack {
             Form {
                 Section(header: Text("Transaction Type")) {
-                    NavigationLink {
-                        IncomeView()
+                    Button {
+                        path = [.income]
                     } label: {
                         Text("Income")
                     }
-                    NavigationLink {
-                        ExpenseView()
+                    Button {
+                        path = [.expense]
                     } label: {
                         Text("Expense")
                     }
-                    NavigationLink {
-                        TransferView()
+                    Button {
+                        path = [.transfer]
                     } label: {
                         Text("Transfer")
                     }
@@ -34,5 +35,5 @@ struct AddTransactionView: View {
 }
 
 #Preview {
-    AddTransactionView()
+    AddTransactionView(path: .constant([]))
 }

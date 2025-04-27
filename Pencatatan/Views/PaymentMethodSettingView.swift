@@ -10,6 +10,7 @@ import SwiftUI
 import CoreData
 
 struct PaymentMethodSettingView: View {
+    @Binding var path: [Screen]
     var body: some View {
         GenericSettingsView<PaymentTypeModel>(
             entityName: "PaymentTypeModel",

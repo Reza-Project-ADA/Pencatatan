@@ -9,6 +9,7 @@ import CoreData
 
 // Example of how to use the generic view for specific entities
 struct ProfileSettingView: View {
+    @Binding var path: [Screen]
     var body: some View {
         GenericSettingsView<ActorModel>(
             entityName: "ActorModel",

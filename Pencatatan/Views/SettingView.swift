@@ -8,48 +8,45 @@
 import SwiftUI
 
 struct SettingView: View {
-    @Environment(\.managedObjectContext) var context
+    @Binding var path: [Screen]
     
     var body: some View {
-        NavigationView {
-            VStack {
-                Form {
-                    Section(header: Text("Settings")) {
-                        NavigationLink {
-                            ProfileSettingView()
-                        } label: {
-                            Text("Profile")
-                        }
-                        NavigationLink {
-                            PaymentMethodSettingView()
-                                .environment(\.managedObjectContext, context)
-                        } label: {
-                            Text("Payment Method")
-                        }
-                        Text("Friends")
-                        NavigationLink {
-                            ItemCategorySettingView()
-                                .environment(\.managedObjectContext, context)
-                        } label: {
-                            Text("Item Categories")
-                        }
+        VStack {
+            Form {
+                Section(header: Text("Settings")) {
+                    Button {
+                        path.append(.profileSetting)
+                    } label: {
+                        Text("Profile")
                     }
-                    Section(header: Text("About")) {
-                        HStack {
-                            Text("Version")
-                            Spacer()
-                            Text("1.0.0")
-                                .foregroundColor(.gray)
-                        }
-                        
-                        
+                    Button {
+                        path.append(.paymentMethodSetting)
+                    } label: {
+                        Text("Payment Method")
                     }
+                    Text("Friends")
+                    Button {
+                        path.append(.itemCategorySetting)
+                    } label: {
+                        Text("Item Categories")
+                    }
+                }
+                Section(header: Text("About")) {
+                    HStack {
+                        Text("Version")
+                        Spacer()
+                        Text("1.0.0")
+                            .foregroundColor(.gray)
+                    }
+                    
+                    
                 }
             }
         }
     }
+    
 }
 
 #Preview {
-    SettingView()
+    SettingView(path: .constant([]))
 }
