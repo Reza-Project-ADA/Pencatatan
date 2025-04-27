@@ -45,6 +45,8 @@ extension PaymentBalanceModel {
             self.balance = self.balance.subtracting(amount)
         case "transfer_in":
             self.balance = self.balance.adding(amount)
+        case "init":
+            self.balance = amount
         default:
             break
         }

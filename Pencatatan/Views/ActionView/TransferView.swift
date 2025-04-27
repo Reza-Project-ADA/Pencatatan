@@ -26,7 +26,8 @@ struct TransferView: View {
     // Fetch payment types
     @FetchRequest(
         entity: PaymentTypeModel.entity(),
-        sortDescriptors: [NSSortDescriptor(key: "name", ascending: true)]
+        sortDescriptors: [NSSortDescriptor(key: "name", ascending: true)],
+        predicate: NSPredicate(format: "deletedAt == nil")
     ) private var paymentTypes: FetchedResults<PaymentTypeModel>
     
     // Fetch actors

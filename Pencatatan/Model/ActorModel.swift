@@ -13,6 +13,23 @@ public class ActorModel: NSManagedObject {
     @NSManaged public var timestamp: Date
 }
 
+extension ActorModel {
+    static func getSystemActor(in context: NSManagedObjectContext) -> ActorModel {
+        let request = NSFetchRequest<ActorModel>(entityName: "ActorModel")
+        request.predicate = NSPredicate(format: "name == %@", "System")
+        request.fetchLimit = 1
+        
+        if let existingActor = try? context.fetch(request).first {
+            return existingActor
+        } else {
+            let newActor = ActorModel(context: context)
+            newActor.name = "System"
+            newActor.timestamp = Date()
+            return newActor
+        }
+    }
+}
+
 extension ActorModel: SettingsEntity {
     func displayTitle() -> String {
         return name

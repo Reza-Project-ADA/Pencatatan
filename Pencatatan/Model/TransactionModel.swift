@@ -8,10 +8,11 @@
 import Foundation
 import CoreData
 
+@objc(TransactionModel)
 public class TransactionModel: NSManagedObject {
     @NSManaged public var actor: ActorModel
     @NSManaged public var amount: NSDecimalNumber
-    @NSManaged public var transactionType: String // "income", "expense", "transfer"
+    @NSManaged public var transactionType: String // "income", "expense", "transfer", "init"
     @NSManaged public var summary: String?
     @NSManaged public var paymentType: PaymentTypeModel? // <- untuk relationship to-one
     @NSManaged public var destinationPaymentType: PaymentTypeModel? // Only for transfer transaction
@@ -64,6 +65,29 @@ extension TransactionModel {
         // Update payment balance
         let balance = PaymentBalanceModel.getOrCreateBalance(for: paymentType, in: context)
         balance.updateBalance(amount: NSDecimalNumber(decimal: amount), transactionType: "expense")
+        
+        return transaction
+    }
+    
+    static func createInitialBalance(
+        amount: NSDecimalNumber,
+        paymentType: PaymentTypeModel,
+        actor: ActorModel,
+        context: NSManagedObjectContext
+    ) -> TransactionModel {
+        let transaction = TransactionModel(context: context)
+        transaction.amount = amount
+        transaction.transactionType = "init"
+        transaction.timestamp = Date()
+        transaction.actor = actor
+        transaction.summary = "Initial balance"
+        transaction.paymentType = paymentType
+        transaction.transactionID = UUID().uuidString
+        
+        // Update payment balance
+        let balance = PaymentBalanceModel.getOrCreateBalance(for: paymentType, in: context)
+        balance.balance = amount
+        balance.lastUpdated = Date()
         
         return transaction
     }

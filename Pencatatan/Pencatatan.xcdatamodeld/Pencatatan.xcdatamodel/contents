@@ -19,10 +19,11 @@
     </entity>
     <entity name="PaymentBalanceModel" representedClassName="PaymentBalanceModel" syncable="YES">
         <attribute name="balance" optional="YES" attributeType="Decimal" defaultValueString="0.0"/>
-        <attribute name="lastUpdate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="lastUpdated" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <relationship name="paymentType" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PaymentTypeModel" inverseName="balance" inverseEntity="PaymentTypeModel"/>
     </entity>
     <entity name="PaymentTypeModel" representedClassName="PaymentTypeModel" syncable="YES">
+        <attribute name="deletedAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="timestamp" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <relationship name="balance" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PaymentBalanceModel" inverseName="paymentType" inverseEntity="PaymentBalanceModel"/>

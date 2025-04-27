@@ -18,6 +18,7 @@ struct GenericSettingsView<T: SettingsEntity>: View {
     let entityTitle: String
     let entityDescription: String
     let fieldConfigurations: [(field: String, label: String, placeholder: String)]
+    let softDeleteEnabled: Bool
     
     // FetchRequest for the specific entity type
     @FetchRequest var items: FetchedResults<T>
@@ -35,15 +36,22 @@ struct GenericSettingsView<T: SettingsEntity>: View {
         entityTitle: String,
         entityDescription: String,
         fieldConfigurations: [(field: String, label: String, placeholder: String)],
-        sortKey: String = "name"
+        sortKey: String = "name",
+        softDeleteEnabled: Bool = false
     ) {
         self.entityName = entityName
         self.entityTitle = entityTitle
         self.entityDescription = entityDescription
         self.fieldConfigurations = fieldConfigurations
+        self.softDeleteEnabled = softDeleteEnabled
         
         // Create fetch request with the provided entity name
         let request = NSFetchRequest<T>(entityName: entityName)
+        
+        if softDeleteEnabled {
+            request.predicate = NSPredicate(format: "deletedAt == nil")
+        }
+        
         request.sortDescriptors = [NSSortDescriptor(key: sortKey, ascending: true)]
         _items = FetchRequest(fetchRequest: request)
         
@@ -282,7 +290,15 @@ struct GenericSettingsView<T: SettingsEntity>: View {
     
     private func deleteItems(at offsets: IndexSet) {
         for index in offsets {
-            context.delete(items[index])
+            let item = items[index]
+            
+            if softDeleteEnabled, let paymentType = item as? PaymentTypeModel {
+                // Perform soft delete
+                paymentType.deletedAt = Date()
+            } else {
+                // Perform hard delete
+                context.delete(item)
+            }
         }
         
         do {

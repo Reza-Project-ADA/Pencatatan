@@ -17,7 +17,9 @@ struct PaymentMethodSettingView: View {
             entityDescription: "Payment Type",
             fieldConfigurations: [
                 (field: "name", label: "Method Name", placeholder: "Enter method name"),
-            ]
+                (field: "initialBalance", label: "Initial Balance", placeholder: "0.00")
+            ],
+            softDeleteEnabled: true
         )
     }
 }
