@@ -14,10 +14,25 @@ struct PersistenceController {
     static let preview: PersistenceController = {
         let result = PersistenceController(inMemory: true)
         let viewContext = result.container.viewContext
-        for _ in 0..<10 {
-            let newItem = Item(context: viewContext)
-            newItem.timestamp = Date()
-        }
+        
+        let paymentType = PaymentTypeModel(context: viewContext)
+        paymentType.name = "Cash"
+        paymentType.timestamp = Date()
+        
+        let transaction = ReceiptTransactionModel(context: viewContext)
+        transaction.cashier = "Reza"
+        transaction.changeTotal = 100000.2
+        transaction.orderNumber = "12345"
+        transaction.paymentType = paymentType
+        transaction.subtotal = 100000
+        transaction.tax = 10000
+        transaction.total = 110000
+        transaction.timestamp = Date()
+        
+        let actor = ActorModel(context: viewContext)
+        actor.name = "Reza"
+        actor.timestamp = Date()
+        
         do {
             try viewContext.save()
         } catch {

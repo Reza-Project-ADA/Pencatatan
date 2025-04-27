@@ -1,9 +1,46 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1" systemVersion="11A491" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="true" userDefinedModelVersionIdentifier="">
-    <entity name="Item" representedClassName="Item" syncable="YES" codeGenerationType="class">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="23605" systemVersion="24E263" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="YES" userDefinedModelVersionIdentifier="">
+    <entity name="ActorModel" representedClassName="ActorModel" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="timestamp" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
     </entity>
-    <elements>
-        <element name="Item" positionX="-63" positionY="-18" width="128" height="44"/>
-    </elements>
+    <entity name="ItemModel" representedClassName="ItemModel" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="price" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="quantity" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="timestamp" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <relationship name="category" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ItemModelCategory" inverseName="itemModels" inverseEntity="ItemModelCategory"/>
+    </entity>
+    <entity name="ItemModelCategory" representedClassName="ItemModelCategory" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="timestamp" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <relationship name="itemModels" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ItemModel" inverseName="category" inverseEntity="ItemModel"/>
+    </entity>
+    <entity name="PaymentTypeModel" representedClassName="PaymentTypeModel" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="timestamp" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <relationship name="receiptTransactions" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ReceiptTransactionModel" inverseName="paymentType" inverseEntity="ReceiptTransactionModel"/>
+    </entity>
+    <entity name="ReceiptModel" representedClassName="ReceiptModel" syncable="YES">
+        <attribute name="timestamp" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <relationship name="store" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="StoreModel" inverseName="receipt" inverseEntity="StoreModel"/>
+    </entity>
+    <entity name="ReceiptTransactionModel" representedClassName="ReceiptTransactionModel" syncable="YES">
+        <attribute name="cashier" optional="YES" attributeType="String"/>
+        <attribute name="changeTotal" optional="YES" attributeType="Decimal" defaultValueString="0.0"/>
+        <attribute name="orderNumber" optional="YES" attributeType="String"/>
+        <attribute name="subtotal" optional="YES" attributeType="Decimal" defaultValueString="0.0"/>
+        <attribute name="tax" optional="YES" attributeType="Decimal" defaultValueString="0.0"/>
+        <attribute name="timestamp" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="total" optional="YES" attributeType="Decimal" defaultValueString="0"/>
+        <relationship name="paymentType" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PaymentTypeModel" inverseName="receiptTransactions" inverseEntity="PaymentTypeModel"/>
+    </entity>
+    <entity name="StoreModel" representedClassName="StoreModel" syncable="YES">
+        <attribute name="address" optional="YES" attributeType="String"/>
+        <attribute name="branch" optional="YES" attributeType="String"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="telp" optional="YES" attributeType="String"/>
+        <attribute name="timestamp" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <relationship name="receipt" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ReceiptModel" inverseName="store" inverseEntity="ReceiptModel"/>
+    </entity>
 </model>
