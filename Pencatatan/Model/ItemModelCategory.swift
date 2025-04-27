@@ -11,6 +11,7 @@ import CoreData
 public class ItemModelCategory: NSManagedObject {
     @NSManaged public var name: String
     @NSManaged public var timestamp: Date
+    @NSManaged public var budget: BudgetModel?
 }
 
 extension ItemModelCategory: SettingsEntity {

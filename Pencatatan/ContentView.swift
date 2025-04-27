@@ -41,7 +41,7 @@ struct ContentView: View {
                     }
             }
 
-            Text("Budgeting")
+            BudgetingView()
                 .tabItem {
                     Label("Budgeting", systemImage: "banknote.fill")
                 }

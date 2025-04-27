@@ -5,16 +5,23 @@
         <attribute name="timestamp" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <relationship name="transactions" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TransactionModel" inverseName="actor" inverseEntity="TransactionModel"/>
     </entity>
+    <entity name="BudgetModel" representedClassName="BudgetModel" syncable="YES">
+        <attribute name="createdAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="limit" optional="YES" attributeType="Decimal" defaultValueString="0.0"/>
+        <relationship name="category" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ItemModelCategory" inverseName="budgeting" inverseEntity="ItemModelCategory"/>
+    </entity>
     <entity name="ItemModel" representedClassName="ItemModel" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="price" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="quantity" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="timestamp" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <relationship name="category" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ItemModelCategory" inverseName="itemModels" inverseEntity="ItemModelCategory"/>
+        <relationship name="transaction" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ReceiptTransactionModel" inverseName="items" inverseEntity="ReceiptTransactionModel"/>
     </entity>
     <entity name="ItemModelCategory" representedClassName="ItemModelCategory" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="timestamp" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <relationship name="budgeting" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="BudgetModel" inverseName="category" inverseEntity="BudgetModel"/>
         <relationship name="itemModels" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ItemModel" inverseName="category" inverseEntity="ItemModel"/>
     </entity>
     <entity name="PaymentBalanceModel" representedClassName="PaymentBalanceModel" syncable="YES">
@@ -44,6 +51,7 @@
         <attribute name="tax" optional="YES" attributeType="Decimal" defaultValueString="0.0"/>
         <attribute name="timestamp" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="total" optional="YES" attributeType="Decimal" defaultValueString="0"/>
+        <relationship name="items" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ItemModel" inverseName="transaction" inverseEntity="ItemModel"/>
         <relationship name="paymentType" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PaymentTypeModel" inverseName="receiptTransactions" inverseEntity="PaymentTypeModel"/>
         <relationship name="receipt" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ReceiptModel" inverseName="transactions" inverseEntity="ReceiptModel"/>
     </entity>
