@@ -93,7 +93,14 @@ struct BudgetingView: View {
                     }
                 }
             }
-            .sheet(isPresented: $showingAddBudgetSheet) {
+            .sheet(isPresented: $showingAddBudgetSheet, onDismiss: {
+                // Force a refresh of the fetch request
+                if let budget = selectedBudget {
+                    context.refresh(budget, mergeChanges: true)
+                }
+                // Clear the selected budget
+                selectedBudget = nil
+            }) {
                 if let budget = selectedBudget {
                     EditBudgetView(budget: budget, context: context)
                 } else {
