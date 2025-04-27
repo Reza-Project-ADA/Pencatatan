@@ -34,6 +34,7 @@
     <entity name="ReceiptModel" representedClassName="ReceiptModel" syncable="YES">
         <attribute name="timestamp" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <relationship name="store" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="StoreModel" inverseName="receipt" inverseEntity="StoreModel"/>
+        <relationship name="transactions" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ReceiptTransactionModel" inverseName="receipt" inverseEntity="ReceiptTransactionModel"/>
     </entity>
     <entity name="ReceiptTransactionModel" representedClassName="ReceiptTransactionModel" syncable="YES">
         <attribute name="cashier" optional="YES" attributeType="String"/>
@@ -44,6 +45,7 @@
         <attribute name="timestamp" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="total" optional="YES" attributeType="Decimal" defaultValueString="0"/>
         <relationship name="paymentType" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PaymentTypeModel" inverseName="receiptTransactions" inverseEntity="PaymentTypeModel"/>
+        <relationship name="receipt" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ReceiptModel" inverseName="transactions" inverseEntity="ReceiptModel"/>
     </entity>
     <entity name="StoreModel" representedClassName="StoreModel" syncable="YES">
         <attribute name="address" optional="YES" attributeType="String"/>
