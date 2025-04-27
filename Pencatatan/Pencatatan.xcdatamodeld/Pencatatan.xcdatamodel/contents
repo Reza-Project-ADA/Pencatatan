@@ -3,6 +3,7 @@
     <entity name="ActorModel" representedClassName="ActorModel" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="timestamp" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <relationship name="transactions" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TransactionModel" inverseName="actor" inverseEntity="TransactionModel"/>
     </entity>
     <entity name="ItemModel" representedClassName="ItemModel" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String"/>
@@ -16,10 +17,18 @@
         <attribute name="timestamp" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <relationship name="itemModels" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ItemModel" inverseName="category" inverseEntity="ItemModel"/>
     </entity>
+    <entity name="PaymentBalanceModel" representedClassName="PaymentBalanceModel" syncable="YES">
+        <attribute name="balance" optional="YES" attributeType="Decimal" defaultValueString="0.0"/>
+        <attribute name="lastUpdate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <relationship name="paymentType" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PaymentTypeModel" inverseName="balance" inverseEntity="PaymentTypeModel"/>
+    </entity>
     <entity name="PaymentTypeModel" representedClassName="PaymentTypeModel" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="timestamp" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <relationship name="balance" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PaymentBalanceModel" inverseName="paymentType" inverseEntity="PaymentBalanceModel"/>
         <relationship name="receiptTransactions" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ReceiptTransactionModel" inverseName="paymentType" inverseEntity="ReceiptTransactionModel"/>
+        <relationship name="transactions" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TransactionModel" inverseName="paymentType" inverseEntity="TransactionModel"/>
+        <relationship name="transferTransactions" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TransactionModel" inverseName="destinationPaymentType" inverseEntity="TransactionModel"/>
     </entity>
     <entity name="ReceiptModel" representedClassName="ReceiptModel" syncable="YES">
         <attribute name="timestamp" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
@@ -42,5 +51,15 @@
         <attribute name="telp" optional="YES" attributeType="String"/>
         <attribute name="timestamp" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <relationship name="receipt" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ReceiptModel" inverseName="store" inverseEntity="ReceiptModel"/>
+    </entity>
+    <entity name="TransactionModel" representedClassName="TransactionModel" syncable="YES">
+        <attribute name="amount" optional="YES" attributeType="Decimal" defaultValueString="0.0"/>
+        <attribute name="summary" optional="YES" attributeType="String"/>
+        <attribute name="timestamp" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="transactionID" optional="YES" attributeType="String"/>
+        <attribute name="transactionType" optional="YES" attributeType="String"/>
+        <relationship name="actor" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ActorModel" inverseName="transactions" inverseEntity="ActorModel"/>
+        <relationship name="destinationPaymentType" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PaymentTypeModel" inverseName="transferTransactions" inverseEntity="PaymentTypeModel"/>
+        <relationship name="paymentType" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PaymentTypeModel" inverseName="transactions" inverseEntity="PaymentTypeModel"/>
     </entity>
 </model>
