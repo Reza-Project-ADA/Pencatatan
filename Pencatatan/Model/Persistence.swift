@@ -18,6 +18,7 @@ struct PersistenceController {
         let paymentType = PaymentTypeModel(context: viewContext)
         paymentType.name = "Cash"
         paymentType.timestamp = Date()
+        paymentType.deletedAt = nil
         
         let transaction = ReceiptTransactionModel(context: viewContext)
         transaction.cashier = "Reza"
