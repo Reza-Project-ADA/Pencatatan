@@ -43,7 +43,7 @@ extension PaymentTypeModel: SettingsEntity {
                 // Add it to transaction
                 let systemActor = ActorModel.getSystemActor(in: context)
                 
-                let transaction = TransactionModel.createInitialBalance(amount: decimalValue, paymentType: self, actor: systemActor, context: context)
+                let _ = TransactionModel.createInitialBalance(amount: decimalValue, paymentType: self, actor: systemActor, context: context)
             }
         }
         // Add more fields here as needed
