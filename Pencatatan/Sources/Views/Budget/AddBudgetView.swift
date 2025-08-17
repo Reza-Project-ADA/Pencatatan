@@ -38,7 +38,7 @@ struct AddBudgetView: View {
                 
                 Section(header: Text("Budget Limit")) {
                     TextField("Monthly Budget", text: $budgetAmount)
-                        .keyboardType(.decimalPad)
+                        .keyboardType(.numberPad)
                 }
                 
                 if let errorMessage = errorMessage {

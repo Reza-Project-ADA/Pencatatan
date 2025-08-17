@@ -30,7 +30,7 @@ struct CameraOCRView: View {
                             Stepper("Quantity: \(items[index].quantity)", value: $items[index].quantity, in: 1...99)
                             Spacer()
                             TextField("Price", value: $items[index].price, formatter: NumberFormatter.currency)
-                                .keyboardType(.decimalPad)
+                                .keyboardType(.numberPad)
                                 .frame(width: 100)
                         }
                     }

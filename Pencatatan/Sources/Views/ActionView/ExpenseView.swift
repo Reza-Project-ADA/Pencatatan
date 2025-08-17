@@ -51,7 +51,7 @@ struct ExpenseView: View {
             // Expense amount
             Section(header: Text("Amount")) {
                 TextField("0", text: $amount)
-                    .keyboardType(.decimalPad)
+                    .keyboardType(.numberPad)
             }
             
             // Payment Method
